@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdf-to-editable-word"
+version = "0.1.0"
+description = "Convert text-based PDFs to layout-preserving DOCX files with editable text."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "pdf-to-editable-word contributors" }]
+keywords = ["pdf", "docx", "word", "agent-skill", "document-conversion"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+dependencies = [
+  "pdfplumber>=0.11.4,<0.12",
+  "Pillow>=10,<13",
+]
+
+[project.optional-dependencies]
+dev = [
+  "reportlab>=4,<5",
+]
+
+[project.scripts]
+pdf2word = "pdf_to_editable_word.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/longligooo/pdf-to-editable-word"
+Issues = "https://github.com/longligooo/pdf-to-editable-word/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
