@@ -10,6 +10,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
 from pdf_to_editable_word.converter import convert_pdf, find_pdftoppm, inspect_pdf, validate_docx
+from pdf_to_editable_word.doctor import run_doctor
+from pdf_to_editable_word.installer import bundled_skill_path, install_skill
 
 
 def make_pdf(path: Path, pages: int = 2) -> None:
@@ -72,6 +74,39 @@ class ConversionTests(unittest.TestCase):
         installed = destination / "pdf-to-editable-word"
         self.assertTrue((installed / "SKILL.md").is_file())
         self.assertTrue((installed / "scripts" / "pdf2word.py").is_file())
+
+    def test_packaged_skill_install(self) -> None:
+        destination = self.root / "packaged-skills"
+        target = install_skill(destination=destination)
+        self.assertEqual(target.resolve(), (destination / "pdf-to-editable-word").resolve())
+        self.assertTrue((target / "SKILL.md").is_file())
+        self.assertTrue((target / "agents" / "openai.yaml").is_file())
+        self.assertTrue((target / "references" / "compatibility.md").is_file())
+
+    def test_bundled_skill_matches_repository(self) -> None:
+        repository_skill = Path(__file__).resolve().parents[1] / "skills" / "pdf-to-editable-word"
+        packaged_skill = bundled_skill_path()
+        relative_files = [
+            Path("SKILL.md"),
+            Path("agents/openai.yaml"),
+            Path("references/compatibility.md"),
+            Path("scripts/pdf2word.py"),
+        ]
+        for relative in relative_files:
+            self.assertEqual(
+                (repository_skill / relative).read_bytes(),
+                (packaged_skill / relative).read_bytes(),
+                f"Run scripts/sync_bundled_skill.py after editing {relative}",
+            )
+
+    def test_doctor_with_explicit_poppler(self) -> None:
+        try:
+            poppler = find_pdftoppm()
+        except FileNotFoundError:
+            self.skipTest("pdftoppm is not installed")
+        result = run_doctor(poppler)
+        self.assertTrue(result["ready"])
+        self.assertTrue(next(check for check in result["checks"] if check["name"] == "poppler")["ok"])
 
 
 if __name__ == "__main__":

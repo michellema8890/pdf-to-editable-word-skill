@@ -2,6 +2,7 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
+tmp/
 .venv/
 venv/
 build/
@@ -12,3 +13,7 @@ coverage.xml
 *.pdf
 *.png
 .pdf2word-work/
+!assets/*.png
+!assets/*.gif
+!examples/*.pdf
+!examples/*.docx

@@ -1,6 +1,9 @@
 # PDF to Editable Word Skill - Layout-Preserving PDF-to-DOCX for AI Agents
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 [![CI](https://github.com/longligooo/pdf-to-editable-word-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/longligooo/pdf-to-editable-word-skill/actions/workflows/ci.yml)
+[![GitHub release](https://img.shields.io/github/v/release/longligooo/pdf-to-editable-word-skill)](https://github.com/longligooo/pdf-to-editable-word-skill/releases/latest)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -15,26 +18,37 @@ A portable **Agent Skill** that converts PDF to editable Word (`.docx`) **withou
 
 > Alpha software. Best for text-based PDFs and desktop Microsoft Word. Scanned PDFs need OCR, which is not included yet.
 
+![PDF to editable Word Agent Skill demo](assets/demo.gif)
+
+The demo is generated from redistributable synthetic data and rendered with Microsoft Word. It preserves the one-page layout, creates `37` editable text boxes, and then changes `Q2` to `Q3` and `48 hours` to `24 hours` inside the DOCX.
+
+[Download the source PDF](examples/demo-source.pdf) | [Download the editable DOCX](examples/demo-output.docx) | [Download the edited DOCX](examples/demo-edited.docx)
+
 ## Install the Skill in 60 seconds
 
-Install Python 3.10+ and [Poppler](https://poppler.freedesktop.org/) (`pdftoppm`), then run:
+Install Python 3.10+, [pipx](https://pipx.pypa.io/), and [Poppler](https://poppler.freedesktop.org/) (`pdftoppm`), then run:
 
 ```bash
-git clone https://github.com/longligooo/pdf-to-editable-word-skill.git
-cd pdf-to-editable-word-skill
-python -m pip install -e .
+pipx install https://github.com/longligooo/pdf-to-editable-word-skill/releases/download/v0.1.0/pdf_to_editable_word-0.1.0-py3-none-any.whl
+pdf2word doctor
 
 # Choose your agent
-python scripts/install_skill.py --agent codex
-python scripts/install_skill.py --agent claude
+pdf2word skill install --agent codex
+pdf2word skill install --agent claude
 ```
 
 On Debian or Ubuntu, install Poppler with `sudo apt-get install poppler-utils`. On Windows, add `pdftoppm.exe` to `PATH` or set the `PDFTOPPM` environment variable.
 
+Without `pipx`, install directly from GitHub:
+
+```bash
+python -m pip install "https://github.com/longligooo/pdf-to-editable-word-skill/releases/download/v0.1.0/pdf_to_editable_word-0.1.0-py3-none-any.whl"
+```
+
 For another Agent Skills-compatible tool, install to its skills directory:
 
 ```bash
-python scripts/install_skill.py --destination /path/to/agent/skills
+pdf2word skill install --destination /path/to/agent/skills
 ```
 
 Then ask your agent:
@@ -81,6 +95,8 @@ The cache is reused only when the source fingerprint, page range, and conversion
 pdf2word inspect INPUT.pdf [--json]
 pdf2word convert INPUT.pdf OUTPUT.docx [--dpi 144] [--resume]
 pdf2word validate OUTPUT.docx [--pdf INPUT.pdf] [--json]
+pdf2word doctor [--json]
+pdf2word skill install [--agent codex|claude] [--scope user|project]
 ```
 
 Use `--pdftoppm PATH` when Poppler is not on `PATH`. Use `--start` and `--end` for a zero-based page range.
@@ -98,6 +114,7 @@ Use `--pdftoppm PATH` when Poppler is not on `PATH`. Use `--start` and `--end` f
 
 ```bash
 python -m pip install -e ".[dev]"
+python scripts/sync_bundled_skill.py
 python -m unittest discover -s tests -v
 ```
 

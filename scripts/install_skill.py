@@ -1,23 +1,14 @@
 from __future__ import annotations
 
 import argparse
-import os
-import shutil
+import sys
 from pathlib import Path
 
 
-SKILL_NAME = "pdf-to-editable-word"
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-SOURCE = REPOSITORY_ROOT / "skills" / SKILL_NAME
+sys.path.insert(0, str(REPOSITORY_ROOT / "src"))
 
-
-def default_skill_root(agent: str, scope: str) -> Path:
-    if scope == "project":
-        return Path.cwd() / (".claude" if agent == "claude" else ".codex") / "skills"
-    if agent == "claude":
-        return Path.home() / ".claude" / "skills"
-    codex_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
-    return codex_home / "skills"
+from pdf_to_editable_word.installer import install_skill  # noqa: E402
 
 
 def main() -> None:
@@ -26,13 +17,13 @@ def main() -> None:
     parser.add_argument("--scope", choices=["user", "project"], default="user")
     parser.add_argument("--destination", type=Path, help="Custom parent skills directory")
     args = parser.parse_args()
-
-    root = args.destination.expanduser().resolve() if args.destination else default_skill_root(args.agent, args.scope)
-    target = root / SKILL_NAME
-    root.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(SOURCE, target, dirs_exist_ok=True)
-    print(f"Installed {SKILL_NAME} to {target}")
-    print("Install the Python package with `python -m pip install .` before invoking the skill.")
+    target = install_skill(
+        agent=args.agent,
+        scope=args.scope,
+        destination=args.destination,
+        source=REPOSITORY_ROOT / "skills" / "pdf-to-editable-word",
+    )
+    print(f"Installed pdf-to-editable-word to {target}")
 
 
 if __name__ == "__main__":

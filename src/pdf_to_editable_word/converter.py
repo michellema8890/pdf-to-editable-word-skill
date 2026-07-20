@@ -74,6 +74,12 @@ def _font_name(fontname: str | None, bold: bool) -> str:
         return "SimSun"
     name = fontname.split("+")[-1].strip()
     lowered = name.lower()
+    if "helvetica" in lowered:
+        return "Arial"
+    if "times" in lowered:
+        return "Times New Roman"
+    if "courier" in lowered:
+        return "Courier New"
     if "hei" in lowered:
         return "SimHei"
     if "song" in lowered or "simsun" in lowered:

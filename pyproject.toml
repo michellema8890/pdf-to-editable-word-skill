@@ -45,3 +45,11 @@ Issues = "https://github.com/longligooo/pdf-to-editable-word-skill/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+pdf_to_editable_word = [
+  "bundled_skill/SKILL.md",
+  "bundled_skill/agents/*.yaml",
+  "bundled_skill/references/*.md",
+  "bundled_skill/scripts/*.py",
+]
