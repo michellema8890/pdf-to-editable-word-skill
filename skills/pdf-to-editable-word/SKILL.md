@@ -1,9 +1,9 @@
 ---
 name: pdf-to-editable-word
-description: Convert text-based PDF files into layout-preserving Microsoft Word DOCX files with editable text, resumable rendering, and structural validation. Use when an agent must turn a PDF into an editable Word document while retaining the original page appearance, especially for fixed-layout, table-heavy, or vertical-text documents. Do not use for scanned PDFs without a text layer unless an OCR stage is available.
+description: Convert PDF to Word or PDF to DOCX while preserving the original page layout and keeping text editable, searchable, and selectable. Use for PDF-to-Word conversion, editable DOCX creation, fixed-layout documents, table-heavy PDFs, vertical text, resumable long-document conversion, or output validation. Works as a portable Agent Skill for Codex, Claude Code, and other agents that can run the CLI. Do not use for scanned PDFs without a text layer unless OCR is available.
 ---
 
-# PDF to Editable Word
+# PDF to Editable Word Skill
 
 Create a visually faithful DOCX by combining cleaned page backgrounds with editable, absolutely positioned text boxes. Run the deterministic CLI for every conversion; do not recreate the OOXML manually.
 

@@ -1,12 +1,64 @@
-# PDF to Editable Word
+# PDF to Editable Word Skill - Layout-Preserving PDF-to-DOCX for AI Agents
 
-Convert text-based PDFs into Microsoft Word documents that preserve the page appearance while keeping text editable. Everything runs locally; documents are never uploaded.
+[![CI](https://github.com/longligooo/pdf-to-editable-word-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/longligooo/pdf-to-editable-word-skill/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-> Alpha software. The current output is optimized for Microsoft Word and for PDFs that already contain a text layer. See [Known limitations](#known-limitations).
+A portable **Agent Skill** that converts PDF to editable Word (`.docx`) **without throwing away the original page layout**. Install one reusable `SKILL.md` in **Codex, Claude Code, or other Agent Skills-compatible tools**; the included local CLI performs the deterministic conversion and validation.
 
-## Why this approach
+> 这是一个跨 Agent 的 PDF 转可编辑 Word Skill：尽量保持原始排版，文字可搜索、可编辑，支持 Codex Skill、Claude Code Skill 和通用 Agent Skills，全程本地处理。
 
-Most converters choose between editable text and visual fidelity. This project uses a hybrid representation:
+- **Layout-preserving:** keeps page borders, tables, images, QR codes, and visual structure in the background.
+- **Editable text:** rebuilds PDF text as searchable, editable Word text boxes.
+- **Private and local:** never uploads your document to an online conversion service.
+- **Agent-ready:** one reusable `SKILL.md` for Codex, Claude Code, or any agent that can run the CLI.
+
+> Alpha software. Best for text-based PDFs and desktop Microsoft Word. Scanned PDFs need OCR, which is not included yet.
+
+## Install the Skill in 60 seconds
+
+Install Python 3.10+ and [Poppler](https://poppler.freedesktop.org/) (`pdftoppm`), then run:
+
+```bash
+git clone https://github.com/longligooo/pdf-to-editable-word-skill.git
+cd pdf-to-editable-word-skill
+python -m pip install -e .
+
+# Choose your agent
+python scripts/install_skill.py --agent codex
+python scripts/install_skill.py --agent claude
+```
+
+On Debian or Ubuntu, install Poppler with `sudo apt-get install poppler-utils`. On Windows, add `pdftoppm.exe` to `PATH` or set the `PDFTOPPM` environment variable.
+
+For another Agent Skills-compatible tool, install to its skills directory:
+
+```bash
+python scripts/install_skill.py --destination /path/to/agent/skills
+```
+
+Then ask your agent:
+
+```text
+Convert report.pdf to an editable Word document, preserve the layout,
+validate the result, and tell me which pages need visual review.
+```
+
+Agents without Skill support can call `pdf2word` directly.
+
+## Use the standalone CLI
+
+The same conversion engine works without an AI agent:
+
+```bash
+pdf2word inspect input.pdf
+pdf2word convert input.pdf output.docx
+pdf2word validate output.docx --pdf input.pdf
+```
+
+## How it preserves the layout
+
+Most PDF-to-Word converters choose between editable text and visual fidelity. This project combines both:
 
 1. Extract words, positions, font sizes, and colors from the PDF text layer.
 2. Render each source page and remove the original glyph areas from the page image.
@@ -15,57 +67,13 @@ Most converters choose between editable text and visual fidelity. This project u
 
 Non-text graphics remain visually faithful because they stay in the page background. Text remains searchable and editable in Word.
 
-## Quick start
-
-Requirements:
-
-- Python 3.10+
-- Poppler (`pdftoppm` on `PATH`)
-- Microsoft Word for the best rendering compatibility
-
-```bash
-git clone https://github.com/longligooo/pdf-to-editable-word.git
-cd pdf-to-editable-word
-python -m pip install -e .
-
-pdf2word inspect input.pdf
-pdf2word convert input.pdf output.docx
-pdf2word validate output.docx --pdf input.pdf
-```
-
-On Windows, install Poppler and either add `pdftoppm.exe` to `PATH` or set `PDFTOPPM` to its full path. On Debian or Ubuntu:
-
-```bash
-sudo apt-get install poppler-utils
-```
-
-Conversion can resume after an interruption:
+For interrupted long documents, resume with:
 
 ```bash
 pdf2word convert input.pdf output.docx --work-dir .pdf2word-work/input --resume
 ```
 
-The work directory contains a source fingerprint and conversion parameters. Cached pages are reused only when the manifest matches.
-
-## Agent installation
-
-The repository includes one portable `SKILL.md` shared by Codex, Claude Code, and agents that implement the Agent Skills convention.
-
-```bash
-# Codex user skill
-python scripts/install_skill.py --agent codex
-
-# Claude Code user skill
-python scripts/install_skill.py --agent claude
-
-# Project-local Claude Code skill
-python scripts/install_skill.py --agent claude --scope project
-
-# Any agent-specific skill directory
-python scripts/install_skill.py --destination /path/to/agent/skills
-```
-
-Agents without Skill support can invoke the `pdf2word` CLI directly. An asynchronous MCP adapter is planned after the conversion job API is stable.
+The cache is reused only when the source fingerprint, page range, and conversion settings match.
 
 ## Commands
 

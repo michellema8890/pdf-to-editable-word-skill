@@ -1,4 +1,4 @@
 interface:
-  display_name: "PDF to Editable Word"
-  short_description: "High-fidelity PDF to editable Word"
+  display_name: "PDF to Editable Word Skill"
+  short_description: "Preserve PDF layout in editable Word"
   default_prompt: "Use $pdf-to-editable-word to convert this PDF into a layout-preserving DOCX with editable text and validate the result."
